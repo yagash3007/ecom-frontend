@@ -1,68 +1,72 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Arrow from "../../../Helpers/icons/Arrow";
 import { getAllCategories } from "../../../../apis/api";
 import { NavbarCategory } from "./NavBarCategory";
 import axios from "axios";
 import "../../../../index.css";
-import { useNavigate } from "react-router-dom/dist";
+
 export default function Navbar({ className }) {
   const [categoryToggle, setToggle] = useState(false);
   const [elementsSize, setSize] = useState("0px");
   const [categories, setCategories] = useState([]);
-  // const getItems = document.querySelectorAll(`.categories-list li`).length;
-  // if (categoryToggle && getItems > 0) {
-  //   setSize(`${40 * getItems}px`);
-  // }
+  const [userData, setUserData] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigate = useNavigate();
-  const handler = () => {
+
+  const toggleCategoryMenu = () => {
     setToggle(!categoryToggle);
   };
 
-  const [userData, setUserData] = useState(null);
+  const toggleUserMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("UserID");
+    setUserData(null);
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        console.log(token, "Token retrieved from localStorage");
-
-        if (token) {
-          const decodedToken = JSON.parse(atob(token.split(".")[1]));
-          console.log(decodedToken, "Decoded Token");
-          const userId = decodedToken.userId;
-          console.log(userId, "User ID from token");
-
-          const response = await axios.get(
-            `https://ecom-backend-deploy.onrender.com/users/${userId}`,
-            {
-              headers: {
-                Authorization: `${token}`,
-              },
-            }
-          );
-
-          console.log(response.data, "Response Data");
-          setUserData(response.data);
-        } else {
-          console.error("No token found");
-        }
-      } catch (error) {
-        console.error("Error fetching user data", error);
+    const checkAuthentication = () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+        const userId = decodedToken.userId;
+        axios
+          .get(`https://ecom-backend-deploy.onrender.com/users/${userId}`, {
+            headers: { Authorization: `${token}` },
+          })
+          .then((response) => {
+            setUserData(response.data);
+            setIsLoggedIn(true);
+          })
+          .catch(() => {
+            setIsLoggedIn(false);
+          });
+      } else {
+        setIsLoggedIn(false);
       }
     };
 
-    fetchUserData();
+    checkAuthentication();
   }, []);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const data = await getAllCategories();
         setCategories(data);
-        console.log(data, "Data used to set categories");
       } catch (error) {
-        setError("An error occurred while fetching categories.");
         console.error("Fetch categories error:", error);
       }
     };
@@ -70,35 +74,19 @@ export default function Navbar({ className }) {
   }, []);
 
   useEffect(() => {
-    console.log(categories, "Updated categories state");
-  }, []);
-
-  categories.map((category) => {
-    console.log(category.name);
-  });
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const handleToggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  useEffect(() => {
     if (categoryToggle) {
-      const getItems = 10;
-      console.log(getItems);
-
-      if (categoryToggle && getItems > 0) {
+      const getItems = categories.length;
+      if (getItems > 0) {
         setSize(`${42 * getItems}px`);
       }
     } else {
       setSize(`0px`);
     }
-  }, [categoryToggle]);
+  }, [categoryToggle, categories]);
 
   return (
     <div
-      className={`nav-widget-wrapper w-full bg-qh5-bwhite h-[60px] relative z-30  ${
+      className={`nav-widget-wrapper w-full bg-qh5-bwhite h-[60px] relative z-30 ${
         className || ""
       }`}
     >
@@ -108,7 +96,7 @@ export default function Navbar({ className }) {
             <div className="flex items-center space-x-3 category-and-nav xl:space-x-7">
               <div className="category w-[270px] h-[53px] bg-white px-5 rounded-t-md mt-[6px] relative">
                 <button
-                  onClick={handler}
+                  onClick={toggleCategoryMenu}
                   type="button"
                   className="flex items-center justify-between w-full h-full"
                 >
@@ -142,16 +130,20 @@ export default function Navbar({ className }) {
                 {categoryToggle && (
                   <div
                     className="fixed top-0 left-0 w-full h-full -z-10"
-                    onClick={handler}
+                    onClick={toggleCategoryMenu}
                   ></div>
                 )}
                 <div
                   className="category-dropdown w-full absolute left-0 top-[53px] overflow-hidden"
-                  style={{ height: `${elementsSize} ` }}
+                  style={{ height: `${elementsSize}` }}
                 >
                   <ul className="categories-list">
                     {categories.map((category) => (
-                      <NavbarCategory id={category._id} name={category.name} />
+                      <NavbarCategory
+                        key={category._id}
+                        id={category._id}
+                        name={category.name}
+                      />
                     ))}
                   </ul>
                 </div>
@@ -160,23 +152,14 @@ export default function Navbar({ className }) {
                 <ul className="flex space-x-5 nav-wrapper xl:space-x-10">
                   <li className="relative">
                     <Link to="/">
-                      <span className="flex items-center text-sm cursor-pointer text-qblack font-600 ">
+                      <span className="flex items-center text-sm cursor-pointer text-qblack font-600">
                         <span>Home</span>
                       </span>
                     </Link>
-                    <div className="sub-menu w-[220px] absolute left-0 top-[60px]">
-                      <div
-                        className="flex items-center justify-between w-full bg-white "
-                        style={{
-                          boxShadow: "0px 15px 50px 0px rgba(0, 0, 0, 0.14)",
-                        }}
-                      ></div>
-                    </div>
                   </li>
-
                   <li>
                     <Link to="/contact">
-                      <span className="flex items-center text-sm cursor-pointer text-qblack font-600 ">
+                      <span className="flex items-center text-sm cursor-pointer text-qblack font-600">
                         <span>Contact</span>
                       </span>
                     </Link>
@@ -185,32 +168,38 @@ export default function Navbar({ className }) {
               </div>
             </div>
             <div className="relative">
-              <div
-                className="become-seller-btn h-[40px] cursor-pointer"
-                onClick={handleToggleMenu}
-              >
-                <div className="flex items-center justify-center h-full">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm">
-                      Welcome Back!{" "}
-                      <span className="font-600">{userData?.name}</span>
-                    </span>
+              {isLoggedIn && (
+                <div
+                  className="become-seller-btn h-[40px] cursor-pointer"
+                  onClick={toggleUserMenu}
+                >
+                  <div className="flex items-center justify-center h-full">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm">
+                        Welcome Back!{" "}
+                        <span className="font-600">{userData?.name}</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              {isMenuOpen && (
+              )}
+              {isMenuOpen && isLoggedIn && (
                 <div className="absolute right-0 px-10 py-4 mt-2 bg-white border rounded shadow-lg top-full">
                   <button
-                    onClick={() => {
-                      localStorage.removeItem("token");
-                      localStorage.removeItem("UserID");
-                      navigate("/login");
-                    }}
+                    onClick={handleLogout}
                     className="w-full text-black hover:text-black font-500 focus:outline-none"
                   >
                     Logout
                   </button>
                 </div>
+              )}
+              {!isLoggedIn && (
+                <button
+                  onClick={handleLogin}
+                  className="login-btn h-[40px] px-4 py-2 bg-black-500 text-white rounded hover:bg-black-600 focus:outline-none"
+                >
+                  Login
+                </button>
               )}
             </div>
           </div>

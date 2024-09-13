@@ -3,6 +3,7 @@ import Compair from "../icons/Compair";
 import QuickViewIco from "../icons/QuickViewIco";
 import Star from "../icons/Star";
 import ThinLove from "../icons/ThinLove";
+import { handleAddToCart } from "../HandleFunctions/handleAddCart";
 
 export default function ProductCardStyleOne({ datas, type }) {
   console.log("jioasdjoaisjd", datas);

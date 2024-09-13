@@ -32,7 +32,7 @@ export const handleAddToCart = async (datas) => {
       }
 
       const existingItem = cart.items.find(
-        (item) => item.product._id.toString() === datas?._id.toString()
+        (item) => item.product?._id.toString() === datas?._id.toString()
       );
 
       console.log("Prve", existingItem);
