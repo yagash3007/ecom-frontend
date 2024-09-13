@@ -15,9 +15,10 @@ export default function Signup() {
   // const [country, setCountry] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [error, setError] = useState("");
-  const [address, setAddress] = useState(""); 
+  const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [checked, setValue] = useState(false);
+  const navigate = useNavigate();
 
   // Toggle function for "remember me" checkbox
   const rememberMe = () => {
@@ -41,6 +42,7 @@ export default function Signup() {
 
       if (response) {
         console.log("Signup successful:", response);
+        navigate("/login");
       } else {
         setError("Signup failed: Invalid credentials");
       }
@@ -133,35 +135,32 @@ export default function Signup() {
                     />
                   </div>
 
-                
-
                   <div className="mb-5 ">
-                  <div className="mb-6">
-                    <InputCom
-                      placeholder="Your address Here"
-                      label="Address*"
-                      name="Address"
-                      type="text"
-                      inputClasses="h-[50px] p-[15px] "
-                      value={address}
-                      inputHandler={(e) => setAddress(e.target.value)}
-                    />
+                    <div className="mb-6">
+                      <InputCom
+                        placeholder="Your address Here"
+                        label="Address*"
+                        name="Address"
+                        type="text"
+                        inputClasses="h-[50px] p-[15px] "
+                        value={address}
+                        inputHandler={(e) => setAddress(e.target.value)}
+                      />
                     </div>
-                    
                   </div>
                   <div className="flex flex-col mb-5 space-y-5 sm:flex-row sm:space-y-0 sm:space-x-5">
                     <div className="mb-6">
-                    <InputCom
-                      placeholder="Enter City"
-                      label="City*"
-                      name="City"
-                      type="text"
-                      inputClasses="h-[50px]"
-                      value={city}
-                      inputHandler={(e) => setCity(e.target.value)}
-                    />
+                      <InputCom
+                        placeholder="Enter City"
+                        label="City*"
+                        name="City"
+                        type="text"
+                        inputClasses="h-[50px]"
+                        value={city}
+                        inputHandler={(e) => setCity(e.target.value)}
+                      />
                     </div>
-                    
+
                     <div className="flex-1">
                       <div className="w-full h-[50px] mb-5 sm:mb-0">
                         <InputCom
@@ -202,7 +201,9 @@ export default function Signup() {
                         className="text-base text-black"
                       >
                         I agree all
-                        <span className="text-qblack">terms and conditions</span>
+                        <span className="text-qblack">
+                          terms and conditions
+                        </span>
                         in BigShop.
                       </span>
                     </div>
