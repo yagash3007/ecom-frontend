@@ -6,7 +6,7 @@ import DataIteration from "../Helpers/DataIteration";
 import Layout from "../Partials/Layout";
 import ProductsFilter from "./ProductsFilter";
 import { useParams } from "react-router-dom";
-import CategoriesSection from "../HomeTwo/CategoriesSection";
+// import CategoriesSection from "../HomeTwo/CategoriesSection";
 import { getCategoryById } from "../../apis/api";
 
 export default function AllProductPage() {

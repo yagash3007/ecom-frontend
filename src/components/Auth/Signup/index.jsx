@@ -2,17 +2,15 @@ import { useState } from "react";
 import InputCom from "../../Helpers/InputCom";
 import Layout from "../../Partials/Layout";
 import Thumbnail from "./Thumbnail";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signupUser } from "../../../apis/api";
 
 export default function Signup() {
-  // State variables for form fields
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneno, setPhoneno] = useState("");
-  // const [country, setCountry] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [error, setError] = useState("");
   const [address, setAddress] = useState("");
@@ -20,12 +18,10 @@ export default function Signup() {
   const [checked, setValue] = useState(false);
   const navigate = useNavigate();
 
-  // Toggle function for "remember me" checkbox
   const rememberMe = () => {
     setValue(!checked);
   };
 
-  // Handle signup
   const handlesignup = async () => {
     try {
       const response = await signupUser(
@@ -34,7 +30,6 @@ export default function Signup() {
         email,
         password,
         phoneno,
-        // country,
         postalCode,
         address,
         city
@@ -42,7 +37,7 @@ export default function Signup() {
 
       if (response) {
         console.log("Signup successful:", response);
-        navigate("/login");
+        navigate("/login"); // Navigate to the login page after successful signup
       } else {
         setError("Signup failed: Invalid credentials");
       }
@@ -80,14 +75,15 @@ export default function Signup() {
                     </svg>
                   </div>
                 </div>
-                <div className="input-area ">
-                  <div className="flex flex-col mb-5 space-y-5 sm:flex-row sm:space-y-0 sm:space-x-5 ">
+                <div className="input-area">
+                  {/* Form Fields */}
+                  <div className="flex flex-col mb-5 space-y-5 sm:flex-row sm:space-y-0 sm:space-x-5">
                     <InputCom
                       placeholder="Name"
                       label="First Name*"
                       name="fname"
                       type="text"
-                      inputClasses="h-[50px] p-[15px] "
+                      inputClasses="h-[50px] p-[15px]"
                       value={firstname}
                       inputHandler={(e) => setFirstname(e.target.value)}
                     />
@@ -97,7 +93,7 @@ export default function Signup() {
                       label="Last Name*"
                       name="lname"
                       type="text"
-                      inputClasses="h-[50px] p-[15px] "
+                      inputClasses="h-[50px] p-[15px]"
                       value={lastname}
                       inputHandler={(e) => setLastname(e.target.value)}
                     />
@@ -108,7 +104,7 @@ export default function Signup() {
                       label="Email Address*"
                       name="email"
                       type="email"
-                      inputClasses="h-[50px] p-[15px] "
+                      inputClasses="h-[50px] p-[15px]"
                       value={email}
                       inputHandler={(e) => setEmail(e.target.value)}
                     />
@@ -118,7 +114,7 @@ export default function Signup() {
                       label="Phone*"
                       name="phone"
                       type="text"
-                      inputClasses="h-[50px] p-[15px] "
+                      inputClasses="h-[50px] p-[15px]"
                       value={phoneno}
                       inputHandler={(e) => setPhoneno(e.target.value)}
                     />
@@ -129,20 +125,20 @@ export default function Signup() {
                       label="Password*"
                       name="Password"
                       type="password"
-                      inputClasses="h-[50px] p-[15px] "
+                      inputClasses="h-[50px] p-[15px]"
                       value={password}
                       inputHandler={(e) => setPassword(e.target.value)}
                     />
                   </div>
 
-                  <div className="mb-5 ">
+                  <div className="mb-5">
                     <div className="mb-6">
                       <InputCom
                         placeholder="Your address Here"
                         label="Address*"
                         name="Address"
                         type="text"
-                        inputClasses="h-[50px] p-[15px] "
+                        inputClasses="h-[50px] p-[15px]"
                         value={address}
                         inputHandler={(e) => setAddress(e.target.value)}
                       />
@@ -165,7 +161,7 @@ export default function Signup() {
                       <div className="w-full h-[50px] mb-5 sm:mb-0">
                         <InputCom
                           label="Postcode / ZIP*"
-                          inputClasses="w-full h-full "
+                          inputClasses="w-full h-full"
                           type="text"
                           placeholder="00000"
                           value={postalCode}
@@ -208,36 +204,27 @@ export default function Signup() {
                       </span>
                     </div>
                   </div>
-                  <div className="mb-3 signin-area">
-                    <div className="flex justify-center">
-                      <button
-                        onClick={handlesignup}
-                        type="button"
-                        className="black-btn text-sm text-white w-full h-[50px] font-semibold flex justify-center bg-purple items-center"
-                      >
-                        <span>Create Account</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-center signup-area">
-                    <p className="text-base font-normal text-qgraytwo">
-                      Already have an Account?
-                      <Link to="/login" className="ml-2 text-qblack">
-                        Log In
-                      </Link>
-                    </p>
-                  </div>
+                  {error && (
+                    <p className="mb-4 text-center text-red-500">{error}</p>
+                  )}
+                  <button
+                    onClick={handlesignup}
+                    type="button"
+                    className="w-full text-base leading-[24px] text-white bg-qblack border border-qblack h-[50px] font-bold"
+                  >
+                    Create Account
+                  </button>
                 </div>
+                <h6 className="mt-8 text-center text-qblack">
+                  Already have an account?{" "}
+                  <Link to="/login">
+                    <span className="text-qblue">Login</span>
+                  </Link>
+                </h6>
               </div>
             </div>
-            <div className="flex-1 hidden transform lg:flex scale-60 xl:scale-100 xl:justify-center">
-              <div
-                className="absolute xl:-right-20 -right-[138px]"
-                style={{ top: "calc(50% - 258px)" }}
-              >
-                <Thumbnail />
-              </div>
+            <div className="flex justify-center w-full lg:w-[570px]">
+              <Thumbnail />
             </div>
           </div>
         </div>

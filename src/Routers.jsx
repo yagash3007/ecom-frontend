@@ -14,7 +14,7 @@ import Faq from "./components/Faq";
 import FlashSale from "./components/FlashSale";
 import FourZeroFour from "./components/FourZeroFour";
 import Home from "./components/Home";
-import HomeTwo from "./components/HomeTwo";
+// import HomeTwo from "./components/HomeTwo";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import ProductsCompaire from "./components/ProductsCompaire/index";
 import SallerPage from "./components/SallerPage";
@@ -23,8 +23,8 @@ import SingleProductPage from "./components/SingleProductPage";
 import TermsCondition from "./components/TermsCondition/index";
 import TrackingOrder from "./components/TrackingOrder";
 import Wishlist from "./components/Wishlist";
-import HomeThree from "./components/HomeThree";
-import HomeFour from "./components/HomeFour";
+// import HomeThree from "./components/HomeThree";
+// import HomeFour from "./components/HomeFour";
 import HomeFive from "./components/HomeFive";
 import Admin from "./components/Admin";
 
@@ -35,9 +35,9 @@ const router = createHashRouter([
   { path: "/admin/users", element: <Admin /> },
   { path: "/admin/category", element: <Admin /> },
   { path: "/admin/orders", element: <Admin /> },
-  { path: "/home-two", element: <HomeTwo /> },
-  { path: "/home-three", element: <HomeThree /> },
-  { path: "/home-four", element: <HomeFour /> },
+  // { path: "/home-two", element: <HomeTwo /> },
+  // { path: "/home-three", element: <HomeThree /> },
+  // { path: "/home-four", element: <HomeFour /> },
   { path: "/home-five", element: <HomeFive /> },
   { path: "/all-products/:category_id", element: <AllProductPage /> },
   { path: "/single-product/:product_id", element: <SingleProductPage /> },
