@@ -1,10 +1,11 @@
 import { useState } from "react";
-
 import InputCom from "../../Helpers/InputCom";
 import Layout from "../../Partials/Layout";
 import Thumbnail from "./Thumbnail";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../../apis/api";
+import { toast, ToastContainer } from "react-toastify"; // Import toast and ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 
 export default function Login() {
   const [checked, setValue] = useState(false);
@@ -22,13 +23,15 @@ export default function Login() {
       const response = await loginUser(email, password);
 
       if (response) {
-        const { token, userId, navigate } = response; // Make sure 'navigateTo' is used for navigation
-        console.log("User ID set yagash:", userId);
+        const { token, userId, navigate } = response;
+        console.log("User ID set:", userId);
+        toast.success("Login successful!");
         console.log("Login successful:", token);
 
         localStorage.setItem("token", token);
         localStorage.setItem("UserID", userId);
 
+        // Show success notification
         if (navigate) {
           navigateTo(`${navigate}`);
         } else {
@@ -36,9 +39,11 @@ export default function Login() {
         }
       } else {
         setError("Invalid credentials");
+        toast.error("Invalid credentials"); // Show error notification
       }
     } catch (error) {
       setError("An error occurred during login.");
+      toast.error("An error occurred during login."); // Show error notification
       console.error("Login error:", error);
     }
   };
@@ -162,6 +167,7 @@ export default function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </Layout>
   );
 }
