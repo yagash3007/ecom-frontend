@@ -31,9 +31,10 @@ export default function Login() {
         localStorage.setItem("UserID", userId);
 
         // Show toast notification after a 500ms delay
-        setTimeout(() => {
-          toast.success("Login successful!", { autoClose: 5000 });
-        }, 500);
+        // setTimeout(() => {
+        //   toast.success("Login successful!", { autoClose: 5000 });
+        // },);
+        toast.error("Logout successful!", { autoClose: 5000 });
 
         console.log("Login successful:", token);
 
