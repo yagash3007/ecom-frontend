@@ -18,15 +18,23 @@ export default function OrderTab() {
           const userId = decodedToken.userId;
           console.log(userId, "User ID from token");
 
-          // Fetch orders for the user
-          const response = await axios.get(`${baseurl}/order?user=${userId}`, {
+          // Fetch all orders
+          const response = await axios.get(`${baseurl}/order`, {
             headers: {
-              Authorization: `Bearer ${token}`, // Add 'Bearer' if your backend expects it
+              Authorization: `${token}`,
             },
           });
 
-          console.log(response.data, "Orders Data");
-          setOrders(response.data);
+          console.log(response.data, "All Orders Data");
+
+          // Filter the orders to show only those that belong to the current user
+          const userOrders = response.data.filter(
+            (order) => order.user === userId
+          );
+
+          console.log(userOrders, "Filtered User Orders");
+
+          setOrders(userOrders);
         } else {
           console.error("No token found");
         }
