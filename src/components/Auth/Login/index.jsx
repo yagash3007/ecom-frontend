@@ -25,13 +25,19 @@ export default function Login() {
       if (response) {
         const { token, userId, navigate } = response;
         console.log("User ID set:", userId);
-        toast.success("Login successful!");
-        console.log("Login successful:", token);
 
+        // Store token and userId in localStorage
         localStorage.setItem("token", token);
         localStorage.setItem("UserID", userId);
 
-        // Show success notification
+        // Show toast notification after a 500ms delay
+        setTimeout(() => {
+          toast.success("Login successful!", { autoClose: 5000 });
+        }, 500);
+
+        console.log("Login successful:", token);
+
+        // Navigate based on the response
         if (navigate) {
           navigateTo(`${navigate}`);
         } else {

@@ -133,24 +133,24 @@ export default function Dashboard() {
                     {userData.email}
                   </td>
                 </tr>
-                <tr className="mb-5">
+                {/* <tr className="mb-5">
                   <td className="text-base text-qgraytwo w-[100px]">Phone:</td>
                   <td className="text-base font-medium text-qblack">
                     {userData.phone || "Not Provided"}
                   </td>
-                </tr>
-                <tr className="mb-5">
+                </tr> */}
+                {/* <tr className="mb-5">
                   <td className="text-base text-qgraytwo w-[100px]">City:</td>
                   <td className="text-base font-medium text-qblack">
                     {userData.city || "Not Provided"}
                   </td>
-                </tr>
-                <tr className="mb-5">
+                </tr> */}
+                {/* <tr className="mb-5">
                   <td className="text-base text-qgraytwo w-[100px]">Zip:</td>
                   <td className="text-base font-medium text-qblack">
                     {userData.zip || "Not Provided"}
                   </td>
-                </tr>
+                </tr> */}
               </tbody>
             </table>
           </div>

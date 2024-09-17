@@ -3,10 +3,15 @@ import Compair from "../../../Helpers/icons/Compair";
 import ThinBag from "../../../Helpers/icons/ThinBag";
 import ThinLove from "../../../Helpers/icons/ThinLove";
 import ThinPeople from "../../../Helpers/icons/ThinPeople";
+import { Link, useNavigate } from "react-router-dom";
 import SearchBox from "../../../Helpers/SearchBox";
-import { Link } from "react-router-dom";
 
 export default function Middlebar({ className }) {
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    navigate("/profile");
+  };
   return (
     <div className={`w-full h-[86px] bg-white ${className}`}>
       <div className="h-full mx-auto container-x">
@@ -64,11 +69,9 @@ export default function Middlebar({ className }) {
                 <Cart className="absolute -right-[45px] top-11 z-50 hidden group-hover:block" />
               </div>
               <div>
-                <Link to="#">
-                  <span>
-                    <ThinPeople />
-                  </span>
-                </Link>
+                <span onClick={handleProfileClick} className="cursor-pointer">
+                  <ThinPeople />
+                </span>
               </div>
             </div>
           </div>

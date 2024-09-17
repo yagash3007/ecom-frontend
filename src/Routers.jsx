@@ -27,6 +27,7 @@ import Wishlist from "./components/Wishlist";
 // import HomeFour from "./components/HomeFour";
 import HomeFive from "./components/HomeFive";
 import Admin from "./components/Admin";
+// import OrderTab from "./components/Auth/Profile/tabs/OrderTab.jsx";
 
 const router = createHashRouter([
   { path: "/", element: <HomeFive /> },
@@ -57,6 +58,7 @@ const router = createHashRouter([
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <Signup /> },
   { path: "/profile", element: <Profile /> },
+  // { path: "/order/:id", element: <OrderTab /> },
   { path: "/become-saller", element: <BecomeSaller /> },
   { path: "/privacy-policy", element: <PrivacyPolicy /> },
   { path: "/terms-condition", element: <TermsCondition /> },
